@@ -1,5 +1,5 @@
 # STIT
-[[Project Page](https://stitch-time.github.io/)] [[Arxiv](https://arxiv.org/)]
+[[Project Page](https://stitch-time.github.io/)] [[Arxiv](https://arxiv.org/abs/2201.08361)]
 
 
 Code For the paper - Stitch it in Time: GAN-Based Facial Editing of Real Videos
