@@ -54,6 +54,7 @@ def to_pil_image(tensor: torch.Tensor) -> Image.Image:
 @click.option('--l2_lambda', type=float, default=10.0)
 @click.option('--center_sigma', type=float, default=1.0)
 @click.option('--xy_sigma', type=float, default=3.0)
+@click.option('--pti_learning_rate', type=float, default=3e-5)
 @click.option('--use_locality_reg/--no_locality_reg', type=bool, default=False)
 @click.option('--use_wandb/--no_wandb', type=bool, default=False)
 def main(**config):
@@ -62,11 +63,12 @@ def main(**config):
 
 def _main(input_folder, output_folder, start_frame, end_frame, run_name,
           scale, num_pti_steps, l2_lambda, center_sigma, xy_sigma,
-          use_fa, use_locality_reg, use_wandb, config):
+          use_fa, use_locality_reg, use_wandb, config, pti_learning_rate):
     global_config.run_name = run_name
     hyperparameters.max_pti_steps = num_pti_steps
     hyperparameters.pt_l2_lambda = l2_lambda
     hyperparameters.use_locality_regularization = use_locality_reg
+    hyperparameters.pti_learning_rate = pti_learning_rate
     if use_wandb:
         wandb.init(project=paths_config.pti_results_keyword, reinit=True, name=global_config.run_name, config=config)
     files = make_dataset(input_folder)
