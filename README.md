@@ -49,7 +49,7 @@ The videos used to produce our results can be downloaded from the following
 To invert a video run:
 
 ```
-python train.py --input_folder /path/to/images_dir \ 
+python train.py --input_folder /path/to/images_dir \
  --output_folder /path/to/experiment_dir \
  --run_name RUN_NAME \
  --num_pti_steps NUM_STEPS
@@ -59,7 +59,7 @@ This includes aligning, cropping, e4e encoding and PTI
 For example:
 
 ```
-python train.py --input_folder /data/obama \ 
+python train.py --input_folder /data/obama \
  --output_folder training_results/obama \
  --run_name obama \
  --num_pti_steps 80
@@ -70,11 +70,11 @@ Weights and biases logging is disabled by default. to enable, add --use_wandb
 ## Naive Editing 
 To run edits without stitching tuning:
 ```
-python edit_video.py --input_folder /path/to/images_dir \ 
+python edit_video.py --input_folder /path/to/images_dir \
  --output_folder /path/to/experiment_dir \
  --run_name RUN_NAME \
  --edit_name EDIT_NAME \
- --edit_range EDIT_RANGE \  
+ --edit_range EDIT_RANGE
 ```
 
 edit_range determines the strength of the edits applied.
@@ -86,18 +86,18 @@ we will apply edits with strength 1, 3 and 5.
 For young Obama use:
 
 ```
-python edit_video.py --input_folder /data/obama \ 
+python edit_video.py --input_folder /data/obama \
  --output_folder edits/obama/ \
  --run_name obama \
  --edit_name age \
- --edit_range -8 -8 1 \  
+ --edit_range -8 -8 1 \
 ```
 
 ## Editing + Stitching Tuning
 
 To run edits with stitching tuning:
 ```
-python edit_video_stitching_tuning.py --input_folder /path/to/images_dir \ 
+python edit_video_stitching_tuning.py --input_folder /path/to/images_dir \
  --output_folder /path/to/experiment_dir \
  --run_name RUN_NAME \
  --edit_name EDIT_NAME \
@@ -115,49 +115,49 @@ Early breaking is disabled by default.
 For young Obama use:
 
 ```
-python edit_video_stitching_tuning.py --input_folder /data/obama \ 
+python edit_video_stitching_tuning.py --input_folder /data/obama \
  --output_folder edits/obama/ \
  --run_name obama \
  --edit_name age \
- --edit_range -8 -8 1 \  
+ --edit_range -8 -8 1 \
  --outer_mask_dilation 50
 ```
 
 For gender editing on Obama use:
 
 ```
-python edit_video_stitching_tuning.py --input_folder /data/obama \ 
+python edit_video_stitching_tuning.py --input_folder /data/obama \
  --output_folder edits/obama/ \
  --run_name obama \
  --edit_name gender \
- --edit_range -6 -6 1 \  
+ --edit_range -6 -6 1 \
  --outer_mask_dilation 50
 ```
 
 For young Emma Watson use:
 
 ```
-python edit_video_stitching_tuning.py --input_folder /data/emma_watson \ 
+python edit_video_stitching_tuning.py --input_folder /data/emma_watson \
  --output_folder edits/emma_watson/ \
  --run_name emma_watson \
  --edit_name age \
- --edit_range -8 -8 1 \  
+ --edit_range -8 -8 1 \
  --outer_mask_dilation 50
 ```
 For smile removal on Emma Watson use:
 ```
-python edit_video_stitching_tuning.py --input_folder /data/emma_watson \ 
+python edit_video_stitching_tuning.py --input_folder /data/emma_watson \
  --output_folder edits/emma_watson/ \
  --run_name emma_watson \
  --edit_name smile \
- --edit_range -3 -3 1 \  
+ --edit_range -3 -3 1 \
  --outer_mask_dilation 50
 ```
 
 For Emma Watson lipstick editing use: (done with styleclip global direction)
 
 ```
-python edit_video_stitching_tuning.py --input_folder /data/emma_watson \ 
+python edit_video_stitching_tuning.py --input_folder /data/emma_watson \
  --output_folder edits/emma_watson/ \
  --run_name emma_watson \
  --edit_type styleclip_global \
@@ -165,7 +165,7 @@ python edit_video_stitching_tuning.py --input_folder /data/emma_watson \
  --neutral_class "Face" \
  --target_class "Face with lipstick" \
  --beta 0.2 \
- --edit_range 10 10 1 \  
+ --edit_range 10 10 1 \
  --outer_mask_dilation 50
 ```
 
@@ -177,14 +177,14 @@ python edit_video_stitching_tuning.py --input_folder datasets/jim/ \
  --run_name jim \
  --edit_name age \
  --edit_range -8 8 2 \
- --outer_mask_dilation 50 \ 
+ --outer_mask_dilation 50 \
  --border_loss_threshold 0.005
  ```
 
 For smiling Kamala Harris:
 ```
 python edit_video_stitching_tuning.py \
- --input_folder datasets/kamala/ \ 
+ --input_folder datasets/kamala/ \
  --output_folder edits/kamala \
  --run_name kamala \
  --edit_name smile \
@@ -251,8 +251,10 @@ Afterwards, editing is performed the same way:
 
 ```
 python edit_video.py --input_folder datasets/ood_spiderverse_gwen/ \
- --output_folder edits/ood --run_name ood \
- --edit_name smile --edit_range 2 2 1
+ --output_folder edits/ood \
+ --run_name ood \
+ --edit_name smile \
+ --edit_range 2 2 1
 ```
 
 <video src="https://user-images.githubusercontent.com/24721699/153874953-1b840a07-4b25-4866-b0bf-e19fabffa989.mp4" controls width=512></video>
@@ -261,9 +263,9 @@ python edit_video.py --input_folder datasets/ood_spiderverse_gwen/ \
 python edit_video.py --input_folder datasets/ood_spiderverse_gwen/ \
  --output_folder edits/ood \
  --run_name ood \
- --edit_type styleclip_global
- --edit_range 10 10 1
- --edit_name lipstick
+ --edit_type styleclip_global \
+ --edit_range 10 10 1 \
+ --edit_name lipstick \
  --target_class 'Face with lipstick'
 ```
 
