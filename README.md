@@ -18,7 +18,13 @@ Pytorch(tested with 1.10, should work with 1.8/1.9 as well) + torchvision
 
 For the rest of the requirements, run:
 ```
-pip install Pillow imageio imageio-ffmpeg dlib face-alignment opencv-python click wandb tqdm scipy matplotlib clip lpips 
+pip install Pillow imageio imageio-ffmpeg dlib face-alignment opencv-python click wandb tqdm scipy matplotlib lpips 
+```
+
+To perform StyleCLIP edits, install clip with:
+
+```
+pip install git+https://github.com/openai/CLIP.git
 ```
 
 ### Pretrained models
