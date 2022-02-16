@@ -25,8 +25,12 @@ def add_texts_to_image_vertical(texts, pivot_images):
     draw = ImageDraw.Draw(text_image)
     font_size = int(math.ceil(24 * image_width / 256))
 
-    for i, text in enumerate(texts):
+    try:
         font = ImageFont.truetype("truetype/freefont/FreeSans.ttf", font_size)
+    except OSError:
+        font = ImageFont.load_default()
+
+    for i, text in enumerate(texts):
         draw.text((image_width // 2 + i * image_width, text_height // 2), text, fill='black', anchor='ms', font=font)
 
     out_image = Image.new('RGB', (pivot_images.width, pivot_images.height + text_image.height))
