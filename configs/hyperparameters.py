@@ -22,3 +22,7 @@ first_inv_steps = 50
 pti_learning_rate = 3e-5
 first_inv_lr = 5e-3
 stitching_tuning_lr = 3e-4
+pti_adam_beta1 = 0.9
+lr_rampdown_length = 0.25
+lr_rampup_length = 0.05
+use_lr_ramp = False

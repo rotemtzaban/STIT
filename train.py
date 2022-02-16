@@ -57,18 +57,20 @@ def to_pil_image(tensor: torch.Tensor) -> Image.Image:
 @click.option('--pti_learning_rate', type=float, default=3e-5)
 @click.option('--use_locality_reg/--no_locality_reg', type=bool, default=False)
 @click.option('--use_wandb/--no_wandb', type=bool, default=False)
+@click.option('--pti_adam_beta1', type=bool, default=False)
 def main(**config):
     _main(**config, config=config)
 
 
 def _main(input_folder, output_folder, start_frame, end_frame, run_name,
           scale, num_pti_steps, l2_lambda, center_sigma, xy_sigma,
-          use_fa, use_locality_reg, use_wandb, config, pti_learning_rate):
+          use_fa, use_locality_reg, use_wandb, config, pti_learning_rate, pti_adam_beta1):
     global_config.run_name = run_name
     hyperparameters.max_pti_steps = num_pti_steps
     hyperparameters.pt_l2_lambda = l2_lambda
     hyperparameters.use_locality_regularization = use_locality_reg
     hyperparameters.pti_learning_rate = pti_learning_rate
+    hyperparameters.pti_adam_beta1 = pti_adam_beta1
     if use_wandb:
         wandb.init(project=paths_config.pti_results_keyword, reinit=True, name=global_config.run_name, config=config)
     files = make_dataset(input_folder)

@@ -2,6 +2,7 @@ import os
 import os.path
 from collections import defaultdict
 
+import numpy as np
 import torch
 import wandb
 from lpips import LPIPS
@@ -61,7 +62,8 @@ class Coach:
         return w_pivot
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.G.parameters(), lr=hyperparameters.pti_learning_rate)
+        optimizer = torch.optim.Adam(self.G.parameters(), betas=(hyperparameters.pti_adam_beta1, 0.999),
+                                     lr=hyperparameters.pti_learning_rate)
 
         return optimizer
 
@@ -81,7 +83,8 @@ class Coach:
             loss += loss_lpips * hyperparameters.pt_lpips_lambda
 
         if use_ball_holder and hyperparameters.use_locality_regularization:
-            ball_holder_loss_val = self.space_regularizer.space_regularizer_loss(new_G, w_batch, log_name, use_wandb=self.use_wandb)
+            ball_holder_loss_val = self.space_regularizer.space_regularizer_loss(new_G, w_batch, log_name,
+                                                                                 use_wandb=self.use_wandb)
             loss += ball_holder_loss_val
 
         return loss, l2_loss_val, loss_lpips
@@ -117,8 +120,19 @@ class Coach:
         self.G = self.G.to(global_config.device)
 
         print('Fine tuning generator')
-        for i in trange(hyperparameters.max_pti_steps):
+
+        for step in trange(hyperparameters.max_pti_steps):
             step_loss_dict = defaultdict(list)
+            t = (step + 1) / hyperparameters.max_pti_steps
+
+            if hyperparameters.use_lr_ramp:
+                lr_ramp = min(1.0, (1.0 - t) / hyperparameters.lr_rampdown_length)
+                lr_ramp = 0.5 - 0.5 * np.cos(lr_ramp * np.pi)
+                lr_ramp = lr_ramp * min(1.0, t / hyperparameters.lr_rampup_length)
+                lr = hyperparameters.pti_learning_rate * lr_ramp
+                for param_group in self.optimizer.param_groups:
+                    param_group['lr'] = lr
+
             for data, w_pivot in zip(images, w_pivots):
                 image_name, image = data
                 image = image.unsqueeze(0)
@@ -128,7 +142,6 @@ class Coach:
                 generated_images = self.forward(w_pivot)
                 loss, l2_loss_val, loss_lpips = self.calc_loss(generated_images, real_images_batch, image_name,
                                                                self.G, use_ball_holder, w_pivot)
-
 
                 step_loss_dict['loss'].append(loss.item())
                 step_loss_dict['l2_loss'].append(l2_loss_val.item())
