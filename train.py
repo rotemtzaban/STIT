@@ -57,7 +57,7 @@ def to_pil_image(tensor: torch.Tensor) -> Image.Image:
 @click.option('--pti_learning_rate', type=float, default=3e-5)
 @click.option('--use_locality_reg/--no_locality_reg', type=bool, default=False)
 @click.option('--use_wandb/--no_wandb', type=bool, default=False)
-@click.option('--pti_adam_beta1', type=bool, default=False)
+@click.option('--pti_adam_beta1', type=float, default=0.9)
 def main(**config):
     _main(**config, config=config)
 
