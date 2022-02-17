@@ -20,6 +20,8 @@ def get_landmark(filepath, predictor, detector=None, fa=None):
     if fa is not None:
         image = io.imread(filepath)
         lms, _, bboxes = fa.get_landmarks(image, return_bboxes=True)
+        if len(lms) == 0:
+            return None
         return lms[0]
 
     if detector is None:
@@ -109,10 +111,9 @@ def crop_image(filepath, output_size, quad, enable_padding=False):
 
 
 def compute_transform(filepath, predictor, detector=None, scale=1.0, fa=None):
-
     lm = get_landmark(filepath, predictor, detector, fa)
     if lm is None:
-        return None
+        raise Exception(f'Did not detect any faces in image: {filepath}')
     lm_chin = lm[0: 17]  # left-right
     lm_eyebrow_left = lm[17: 22]  # left-right
     lm_eyebrow_right = lm[22: 27]  # left-right
