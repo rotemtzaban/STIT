@@ -1,6 +1,4 @@
-import matplotlib
 from configs import paths_config
-matplotlib.use('Agg')
 import torch
 from torch import nn
 from models.e4e.encoders import psp_encoders
