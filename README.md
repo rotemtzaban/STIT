@@ -14,14 +14,12 @@
 
 ## Requirements
 
-Pytorch(tested with 1.10, should work with 1.8/1.9 as well) + torchvision
-
-For the rest of the requirements, run:
-```
-pip install Pillow imageio imageio-ffmpeg dlib face-alignment opencv-python click wandb tqdm scipy matplotlib lpips 
-```
-
-To perform StyleCLIP edits, install clip with:
+- Pytorch(tested with 1.10, should work with 1.8/1.9 as well) + torchvision, Follow <https://pytorch.org/> 
+  for pytorch installation instructions.
+- CUDA toolkit 11.0 or later. Make sure you have the requirements listed here: 
+  <https://github.com/NVlabs/stylegan2-ada-pytorch#requirements>
+- For the rest of the requirements, use: ```pip install requirements.txt```
+- To perform StyleCLIP edits, install clip with:
 
 ```
 pip install git+https://github.com/openai/CLIP.git
