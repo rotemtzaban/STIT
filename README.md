@@ -18,7 +18,7 @@
   for pytorch installation instructions.
 - CUDA toolkit 11.0 or later. Make sure you have the requirements listed here: 
   <https://github.com/NVlabs/stylegan2-ada-pytorch#requirements>
-- For the rest of the requirements, use: ```pip install requirements.txt```
+- For the rest of the requirements, use: ```pip install -r requirements.txt```
 - To perform StyleCLIP edits, install clip with:
 
 ```
