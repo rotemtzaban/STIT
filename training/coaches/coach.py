@@ -26,7 +26,11 @@ class Coach:
         if hyperparameters.first_inv_type == 'e4e':
             self.e4e_inversion_net = initialize_e4e_wplus()
 
-        self.e4e_image_transform = transforms.Resize((256, 256))
+        self.e4e_image_transform = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+        ])
 
         # Initialize loss
         self.lpips_loss = LPIPS(net=hyperparameters.lpips_type).to(global_config.device).eval()
