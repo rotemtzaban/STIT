@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import wandb
 from lpips import LPIPS
+import torch.nn.functional as F
 from torchvision import transforms
 from tqdm import tqdm, trange
 
@@ -25,12 +26,6 @@ class Coach:
 
         if hyperparameters.first_inv_type == 'e4e':
             self.e4e_inversion_net = initialize_e4e_wplus()
-
-        self.e4e_image_transform = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.Resize((256, 256)),
-            transforms.ToTensor(),
-        ])
 
         # Initialize loss
         self.lpips_loss = LPIPS(net=hyperparameters.lpips_type).to(global_config.device).eval()
@@ -99,8 +94,9 @@ class Coach:
         return generated_images
 
     def get_e4e_inversion(self, image):
-        new_image = self.e4e_image_transform(image).to(global_config.device)
-        _, w = self.e4e_inversion_net(new_image.unsqueeze(0), randomize_noise=False, return_latents=True, resize=False,
+        img_resize = F.interpolate(image.unsqueeze(0), size=[256, 256])
+        new_image = img_resize.to(global_config.device)
+        _, w = self.e4e_inversion_net(new_image, randomize_noise=False, return_latents=True, resize=False,
                                       input_code=False)
         if self.use_wandb:
             log_image_from_w(w, self.G, 'First e4e inversion')
