@@ -24,9 +24,11 @@ from utils.models_utils import load_generators
 def calc_mask(inversion, segmentation_model):
     background_classes = [0, 18, 16]
     inversion_resized = torch.cat([F.interpolate(inversion, (512, 512), mode='nearest')])
+    inversion_resized = inversion_resized.squeeze(0)
+
     inversion_normalized = transforms.functional.normalize(inversion_resized.clip(-1, 1).add(1).div(2),
                                                            [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    segmentation = segmentation_model(inversion_normalized)[0].argmax(dim=1, keepdim=True)
+    segmentation = segmentation_model(inversion_normalized.unsqueeze(0))[0].argmax(dim=1, keepdim=True)
     is_foreground = torch.stack([segmentation != cls for cls in background_classes], dim=0).all(dim=0)
     foreground_mask = F.interpolate(is_foreground.float(), (1024, 1024), mode='bilinear', align_corners=True)
     return foreground_mask
