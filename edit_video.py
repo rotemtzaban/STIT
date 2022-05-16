@@ -134,7 +134,7 @@ def _main(input_folder, output_folder, start_frame, end_frame, run_name,
         for folder_name, frames in video_frames.items():
             folder_path = os.path.join(output_folder, folder_name)
             os.makedirs(folder_path, exist_ok=True)
-            imageio.mimwrite(os.path.join(folder_path, 'out.mp4'), frames, fps=18, output_params=['-vf', 'fps=25'])
+            imageio.mimwrite(os.path.join(folder_path, 'out.mp4'), frames, fps=25, output_params=['-vf', 'fps=25'])
 
 
 def save_image(image, file):
